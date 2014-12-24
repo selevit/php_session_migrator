@@ -7,7 +7,6 @@ require_once 'BaseSessionManager.php';
  */
 class MemcacheSessionManager extends BaseSessionManager
 {
-    private $prefix = 'memc.sess.key.';
     private $host;
     private $port;
     private $conn;
@@ -37,7 +36,7 @@ class MemcacheSessionManager extends BaseSessionManager
         if (empty($key)) {
             throw new InvalidArgumentException('key is empty');
         }
-        $full_key = $this->prefix . $key;
+        $full_key = $this->getPrefix() . $key;
         return $this->conn->get($full_key);
     }
 
@@ -47,7 +46,7 @@ class MemcacheSessionManager extends BaseSessionManager
         if (empty($key)) {
             throw new InvalidArgumentException('key is empty');
         }
-        $full_key = $this->prefix . $key;
+        $full_key = $this->getPrefix() . $key;
         $this->conn->set($full_key, $value);
     }
 
@@ -59,8 +58,8 @@ class MemcacheSessionManager extends BaseSessionManager
         }
         $ret = array();
         foreach ($keys as $k) {
-            if (starts_with($k, $this->prefix)) {
-                $ret[] = str_replace($this->prefix, '', $k); 
+            if (starts_with($k, $this->getPrefix())) {
+                $ret[] = str_replace($this->getPrefix(), '', $k); 
             }
         }
         return $ret;

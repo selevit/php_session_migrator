@@ -18,13 +18,23 @@ $params = array(
     'session_managers' => array(
         'files' => array(
             'class_name' => 'FileSessionManager',
-            'params' => array('path' => '/var/lib/php5/')
+            'prefix' => 'sess_',
+            'params' => array('path' => '/var/lib/php5/'),
         ),
         'memcache' => array(
             'class_name' => 'MemcacheSessionManager',
+            'prefix' => 'memc.sess.key.',
             'params' => array(
                 'host' => 'localhost', 
                 'port' => 11211,
+            )
+        ),
+        'redis' => array(
+            'class_name' => 'RedisSessionManager',
+            'prefix' => 'PHPREDIS_SESSION:',
+            'params' => array(
+                'host' => 'localhost',
+                'port' => '',
             )
         ),
     )
@@ -115,12 +125,13 @@ function main()
 
     $src_params =  $managers[$opts['from']]['params'];
     $src_cls = $managers[$opts['from']]['class_name'];
-    $src = new $src_cls($src_params);
+    $src = new $src_cls($managers[$opts['from']]['prefix'], $src_params);
 
     $dest_params =  $managers[$opts['to']]['params'];
     $dest_cls = $managers[$opts['to']]['class_name'];
-    $dest = new $dest_cls($dest_params);
-    
+
+    $dest = new $dest_cls($managers[$opts['to']]['prefix'], $dest_params);
+
     move_sessions($src, $dest);
 }
 

@@ -5,8 +5,14 @@
  */
 abstract class BaseSessionManager
 {
-    public function __construct(array $params)
+    private $prefix;
+
+    public function __construct($prefix, array $params)
     {
+        $this->prefix = strval($prefix);
+        if (empty($this->prefix)) {
+            throw new InvalidArgumentException('prefix required');
+        }
         $this->params = $params;
         $this->connect($params);
     }
@@ -14,6 +20,11 @@ abstract class BaseSessionManager
     public function __destruct()
     {
         $this->disconnect();
+    }
+
+    public function getPrefix()
+    {
+        return $this->prefix;
     }
 
     /**

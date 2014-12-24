@@ -8,12 +8,6 @@ require_once 'BaseSessionManager.php';
 class FileSessionManager extends BaseSessionManager
 {
     /**
-     * Session key prefix (file name prefix)
-     * @var string
-     */
-    private $prefix = 'sess_';
-
-    /**
      * Path of the PHP session directory (ini: session_save_path)
      * @var string
      */
@@ -43,7 +37,7 @@ class FileSessionManager extends BaseSessionManager
         if (empty($key)) {
             throw new InvalidArgumentException('key is empty');
         }
-        $session_filename = $this->path . $this->prefix . $key;
+        $session_filename = $this->path . $this->getPrefix() . $key;
         return file_get_contents($session_filename);
     }
 
@@ -53,7 +47,7 @@ class FileSessionManager extends BaseSessionManager
         if (empty($key)) {
             throw new InvalidArgumentException('key is empty');
         }
-        $session_filename = $this->path . $this->prefix . $key;
+        $session_filename = $this->path . $this->getPrefix() . $key;
         return file_put_contents($session_filename, $value);
     }
 
@@ -65,8 +59,8 @@ class FileSessionManager extends BaseSessionManager
         }
         $ret = array();
         foreach($sessions as $s) {
-            if(!in_array($s, array('.', '..')) && starts_with($s, $this->prefix)) {
-                $ret[] = str_replace($this->prefix, '', $s);
+            if(!in_array($s, array('.', '..')) && starts_with($s, $this->getPrefix())) {
+                $ret[] = str_replace($this->getPrefix(), '', $s);
             }
         }
         return $ret;
