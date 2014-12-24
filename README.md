@@ -2,7 +2,7 @@
 
 Script for the migration between PHP session storages.
 
-# Examples
+## Examples
 
 Migrate from files to memcache:
 
