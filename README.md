@@ -10,10 +10,10 @@ Migrate from files to memcache:
 php migrator.php --from=files --to=memcache
 ```
 
-Migrate from memcache to reids:
+Migrate from memcache to redis:
 
 ```
-php migrator.php --from=memcache --to=files
+php migrator.php --from=memcache --to=redis
 ```
 
 ## Supported session storages
