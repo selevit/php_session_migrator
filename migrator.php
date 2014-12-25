@@ -60,7 +60,9 @@ function echo_usage()
 {
     global $argv;
     $s = "Usage: php " . $argv[0] . " --from=<source> --to=<destination>\n\n";
-    $s .= "Supported storages: " . implode(', ', get_supported_storages());
+    $s .= "Options:\n\n";
+    $s .= "--clean-destination - remove all sessions from the destination storage";
+    $s .= "\n\nSupported storages: " . implode(', ', get_supported_storages());
     echo $s;
 }
 
@@ -101,7 +103,7 @@ function move_sessions(BaseSessionManager $src, BaseSessionManager $dest, $verbo
 function main()
 {
     global $params;
-    $longopts = array('from:', 'to:');
+    $longopts = array('from:', 'to:', 'clean-destination::');
     $opts = getopt('', $longopts);
     $supported_storages = get_supported_storages();
 
@@ -132,6 +134,13 @@ function main()
     $dest_cls = $managers[$opts['to']]['class_name'];
 
     $dest = new $dest_cls($managers[$opts['to']]['prefix'], $dest_params);
+
+    if (isset($opts['clean-destination'])) {
+        echo "Removing all sessions from the destination storage...\n";
+        $deleted_count = $dest->deleteAll();
+        echo "Removed items: $deleted_count\n";
+        echo "Done.\n\n";
+    }
 
     move_sessions($src, $dest);
 }

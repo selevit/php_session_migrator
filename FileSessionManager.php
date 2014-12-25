@@ -51,6 +51,27 @@ class FileSessionManager extends BaseSessionManager
         return file_put_contents($session_filename, $value);
     }
 
+    public function delete($key)
+    {
+        $key = strval($key);
+        if (empty($key)) {
+            throw new InvalidArgumentException('key is empty');
+        }
+        $session_filename = $this->path . $this->getPrefix() . $key;
+        return unlink($session_filename);
+    }
+
+    public function deleteAll()
+    {
+        $keys = $this->getAllKeys();
+        $count = 0;
+        foreach ($keys as $key) {
+            $this->delete($key);
+            $count++;
+        }
+        return $count;
+    }
+
     public function getAllKeys()
     {
         $sessions = scandir($this->path);

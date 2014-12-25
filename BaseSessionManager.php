@@ -53,6 +53,19 @@ abstract class BaseSessionManager
     abstract public function set($key, $value);
 
     /**
+     * Delete session
+     * @param string $key session id
+     */
+    abstract public function delete($key);
+
+    /**
+     * Delete all sessions
+     * @param string $key session id
+     * @return integer count of the delete items
+     */
+    abstract public function deleteAll();
+
+    /**
      * Get all session identifiers
      * @return array
      */

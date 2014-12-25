@@ -50,6 +50,27 @@ class MemcacheSessionManager extends BaseSessionManager
         $this->conn->set($full_key, $value);
     }
 
+    public function delete($key)
+    {
+        $key = strval($key);
+        if (empty($key)) {
+            throw new InvalidArgumentException('key is empty');
+        }
+        $full_key = $this->getPrefix() . $key;
+        $this->conn->delete($full_key);
+    }
+
+    public function deleteAll()
+    {
+        $keys = $this->getAllKeys();
+        $count = 0;
+        foreach ($keys as $key) {
+            $this->delete($key);
+            $count++;
+        }
+        return $count;
+    }
+
     public function getAllKeys()
     {
         $keys = $this->conn->getAllKeys();
