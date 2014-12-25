@@ -9,6 +9,7 @@
  */
 require_once 'FileSessionManager.php';
 require_once 'MemcacheSessionManager.php';
+require_once 'RedisSessionManager.php';
 
 
 /**
@@ -34,7 +35,7 @@ $params = array(
             'prefix' => 'PHPREDIS_SESSION:',
             'params' => array(
                 'host' => 'localhost',
-                'port' => '',
+                'port' => 6379,
             )
         ),
     )

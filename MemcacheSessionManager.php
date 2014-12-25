@@ -14,10 +14,10 @@ class MemcacheSessionManager extends BaseSessionManager
     public function connect(array $params)
     {
         if (empty($params['host'])) {
-            throw new InvalidArgumentException('path not found');
+            throw new InvalidArgumentException('host not found');
         }
         if (empty($params['port'])) {
-            throw new InvalidArgumentException('path not found');
+            throw new InvalidArgumentException('port not found');
         }
         $this->host = $params['host'];
         $this->port = $params['port'];
