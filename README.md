@@ -22,6 +22,6 @@ php migrator.php --from=memcache --to=redis
 - Memcache
 - Redis
 
-# Other options
+## Other options
 
 - `--clean-destination` — remove all sessions from the destination storage.
